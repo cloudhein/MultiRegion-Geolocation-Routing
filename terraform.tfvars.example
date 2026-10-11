@@ -1,0 +1,37 @@
+project_name       = "geo-routing"
+enable_nat_gateway = true
+
+singapore_region = "ap-southeast-1"
+singapore_vpc_cidr = "10.10.0.0/16"
+
+usa_region = "us-east-1"
+usa_vpc_cidr = "10.20.0.0/16"
+
+paris_region = "eu-west-3"
+paris_vpc_cidr = "10.30.0.0/16"
+
+tags = {
+  Environment = "demo"
+}
+
+# Subnet CIDRs must be inside the corresponding VPC and must not overlap.
+singapore_public_subnets_cidr = ["10.10.1.0/24", "10.10.2.0/24"]
+singapore_private_subnets_cidr = ["10.10.11.0/24", "10.10.12.0/24"]
+usa_public_subnets_cidr = ["10.20.1.0/24", "10.20.2.0/24"]
+usa_private_subnets_cidr = ["10.20.11.0/24", "10.20.12.0/24"]
+paris_public_subnets_cidr = ["10.30.1.0/24", "10.30.2.0/24"]
+paris_private_subnets_cidr = ["10.30.11.0/24", "10.30.12.0/24"]
+
+# Required application input: use your real SSH public-key path.
+ssh_public_key_path = "~/.ssh/geo-routing.pub"
+# Leave certificates unset for HTTP-only deployment.
+# After creating and validating the certificates manually, uncomment with real ARNs.
+# singapore_certificate_arn = "arn:aws:acm:ap-southeast-1:123456789012:certificate/REPLACE_ME"
+# usa_certificate_arn       = "arn:aws:acm:us-east-1:123456789012:certificate/REPLACE_ME"
+# paris_certificate_arn     = "arn:aws:acm:eu-west-3:123456789012:certificate/REPLACE_ME"
+
+# One instance per region by default. Set 2 or more for application redundancy.
+singapore_app_instance_count = 1
+usa_app_instance_count       = 1
+paris_app_instance_count     = 1
+app_root_volume_size        = 16

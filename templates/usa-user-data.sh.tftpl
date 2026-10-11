@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+exec > >(tee -a /var/log/application-bootstrap.log) 2>&1
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y ca-certificates curl
+
+# Install Docker for real; --dry-run would only preview installation.
+curl --fail --silent --show-error --retry 5 --location https://get.docker.com -o /tmp/get-docker.sh
+sh /tmp/get-docker.sh
+usermod -aG docker ubuntu
+systemctl enable --now docker
+
+docker pull mrnanda/usa-web:1.0
+docker run -d --name usa-web --restart unless-stopped -p 80:80 mrnanda/usa-web:1.0
